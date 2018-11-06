@@ -1,0 +1,65 @@
+<template>
+    <div class="list-index">
+        <el-row class="index-module" :gutter="20">
+            <el-col :span="3"><router-link class="link-a" :to="{name:'runList'}">设备运行列表</router-link></el-col>
+            <el-col :span="3"><router-link class="link-a" :to="{name:'IDused'}">试用ID使用记录</router-link></el-col>
+            <el-col :span="3"><router-link class="link-a" :to="{name:'authManage'}">授权码管理</router-link></el-col>
+        </el-row>
+        <el-dropdown>
+        <span class="el-dropdown-link userMessgae">
+            管理员<i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
+        </el-dropdown-menu>
+        </el-dropdown>
+        <router-view class="list-index-rv"></router-view>
+    </div>
+</template>
+
+<script>
+export default {
+    methods:{
+        logout(){
+            this.$router.push({name:'login'})
+        }
+    }
+}
+</script>
+
+<style lang="less">
+    .list-index {
+        position: relative;
+        .list-index-rv {
+            box-sizing: border-box;
+            padding: 20px;
+        }
+        .index-module {
+            margin:0 !important;
+            border-bottom: 1px solid #000;
+            padding:20px 0 20px 20px;
+            box-sizing: border-box;
+        }
+        .router-link-active {
+            background:#409EFF !important;
+        }
+        .link-a {
+            display: block;
+            padding: 10px;
+            background: #999;
+            color:white;
+            text-align: center;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: background 0.3s ease-in;
+        }
+        
+        .el-dropdown {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 90px;
+            padding: 10px;
+        }
+    }
+</style>
