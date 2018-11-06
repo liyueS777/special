@@ -5,14 +5,12 @@
             <el-col :span="3"><router-link class="link-a" :to="{name:'IDused'}">试用ID使用记录</router-link></el-col>
             <el-col :span="3"><router-link class="link-a" :to="{name:'authManage'}">授权码管理</router-link></el-col>
         </el-row>
-        <el-dropdown>
-        <span class="el-dropdown-link userMessgae">
-            管理员<i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
-        </el-dropdown-menu>
-        </el-dropdown>
+        <el-dropdown size="small" split-button type="primary" plain trigger="hover">
+            管理员
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
+            </el-dropdown-menu>
+            </el-dropdown>
         <router-view class="list-index-rv"></router-view>
     </div>
 </template>
@@ -35,8 +33,9 @@ export default {
             padding: 20px;
         }
         .index-module {
+            background: #fff;
             margin:0 !important;
-            border-bottom: 1px solid #000;
+            border-bottom: 1px solid #c0c4cc;
             padding:20px 0 20px 20px;
             box-sizing: border-box;
         }
@@ -58,8 +57,10 @@ export default {
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 90px;
-            padding: 10px;
+            // width: 90px;
+            // padding: 10px;
+            // border-radius: 4px;
+            // transition:background 0.4s ease-out;
         }
     }
 </style>

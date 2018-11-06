@@ -19,5 +19,6 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
+  background: #eff0f4;
 }
 </style>

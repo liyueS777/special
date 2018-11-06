@@ -5,9 +5,12 @@
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
         </el-row>
-        <el-button size="mini" @click.native="create">创建试用ID</el-button>
+        <div class="line-l">
+            <el-button size="mini" type="success" @click.native="create">创建试用ID</el-button>
+        </div>
         <el-table
             header-row-class-name="myTablee"
+            :header-cell-style="getRowClass"
             :fit="true"
             border
             stripe
@@ -71,7 +74,8 @@
                 label="操作"
                 >
                 <template slot-scope="scope">
-                <el-button size="mini">启动</el-button>
+                <el-button size="mini" type="primary">启动</el-button>
+                <el-button size="mini" type="danger">停止</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -127,9 +131,18 @@ export default {
     };
   },
   methods: {
+    getRowClass({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex == 0) {
+        return "background:#498e26;color:#fff";
+      } else {
+        return "";
+      }
+    },
     create() {
       this.IDusedVisible = true;
-      this.createIDusedForm.id && this.createIDusedForm.name && this.resetForm("ruleForm")
+      this.createIDusedForm.id &&
+        this.createIDusedForm.name &&
+        this.resetForm("ruleForm");
     },
     handleRunlist(page) {
       console.log(page);
@@ -180,20 +193,33 @@ export default {
 .IDused {
   .IDused-module {
     margin-bottom: 20px;
+    background: #fff;
+    padding: 10px;
     .el-col {
       text-align: center;
       .num {
-        background: #ebeef5;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        background: #3ac5e6;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 4px;
+        color:#fff;
       }
     }
   }
   .IDusedListData {
     margin: 20px auto;
+    border-radius: 4px;
+  }
+  .line-l {
+    padding: 10px 10px 10px 15px;
+    border-radius: 4px;
+    background: #fff;
   }
   .pages {
     text-align: right;
+    padding: 10px;
+    border-radius: 4px;
+    background: #fff;
   }
 }
 </style>

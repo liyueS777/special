@@ -10,13 +10,16 @@
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
         </el-row>
-        <el-input style="width:300px;margin-right:10px;margin-top:20px;" placeholder="请输入用户手机号查询" v-model="phone" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search" size="mini"></el-button>
-        </el-input>
-        <el-button size="medium">导出数据</el-button>
-        <el-button size="medium">导出全部数据</el-button>
+        <div class="line-l">
+            <el-input style="width:300px;margin-right:10px;;" placeholder="请输入用户手机号查询" v-model="phone" class="input-with-select">
+                <el-button slot="append" icon="el-icon-search" size="mini"></el-button>
+            </el-input>
+            <el-button size="medium" plain type="primary">导出数据</el-button>
+            <el-button size="medium" plain type="success">导出全部数据</el-button>
+        </div>
         <el-table
                       header-row-class-name="myTablee"
+                      :header-cell-style="getRowClass"
                       :fit="true"
                       border
                       stripe
@@ -100,16 +103,23 @@
 export default {
   data() {
     return {
-        phone: "",
-        runList:[1,2,3,4],
-        pageSize:10,
-        currentPage:1,
-        totalPage:2
+      phone: "",
+      runList: [1, 2, 3, 4],
+      pageSize: 10,
+      currentPage: 1,
+      totalPage: 2
     };
   },
-  methods:{
-    handleRunlist(page){
-        console.log(page)
+  methods: {
+    handleRunlist(page) {
+      console.log(page);
+    },
+    getRowClass({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex == 0) {
+        return "background:#498e26;color:#fff";
+      } else {
+        return "";
+      }
     }
   }
 };
@@ -119,20 +129,33 @@ export default {
 .runList {
   .runList-module {
     margin-bottom: 10px;
+    background: #fff;
+    padding: 10px;
     .el-col {
       text-align: center;
       .num {
-        background: #ebeef5;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        background: #3ac5e6;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 4px;
+        color:#fff;
       }
     }
   }
   .runListData {
-      margin: 20px auto;
+    margin: 20px auto;
+    border-radius: 4px;
+  }
+  .line-l {
+    padding: 10px 10px 10px 15px;
+    border-radius: 4px;
+    background: #fff;
   }
   .pages {
-      text-align: right;
+    text-align: right;
+    padding: 10px;
+    border-radius: 4px;
+    background: #fff;
   }
 }
 </style>

@@ -11,12 +11,15 @@
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
         </el-row>
-        <el-input style="width:300px;margin-right:10px;margin-top:20px;" placeholder="请输入用户手机号查询" v-model="phone" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search" size="mini"></el-button>
-        </el-input>
-        <el-button size="medium">生成授权码</el-button>
+        <div class="line-l">
+            <el-input style="width:300px;margin-right:10px;" placeholder="请输入用户手机号查询" v-model="phone" class="input-with-select">
+                <el-button slot="append" icon="el-icon-search" size="mini"></el-button>
+            </el-input>
+            <el-button size="medium" type="success">生成授权码</el-button>
+        </div>
         <el-table
                       header-row-class-name="myTablee"
+                      :header-cell-style="getRowClass"
                       :fit="true"
                       border
                       stripe
@@ -110,6 +113,13 @@ export default {
   methods:{
     handleRunlist(page){
         console.log(page)
+    },
+    getRowClass({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex == 0) {
+        return "background:#498e26;color:#fff";
+      } else {
+        return "";
+      }
     }
   }
 };
@@ -119,20 +129,33 @@ export default {
 .authManage {
   .authManage-module {
     margin-bottom: 10px;
+    background: #fff;
+    padding: 10px;
     .el-col {
       text-align: center;
       .num {
-        background: #ebeef5;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        background: #3ac5e6;
+        height: 30px;
+        line-height: 30px;
+        border-radius:4px;
+        color:#fff;
       }
     }
   }
   .authManagetData {
       margin: 20px auto;
+      border-radius: 4px;
+  }
+  .line-l {
+    padding:10px 10px 10px 15px;
+    border-radius: 4px;
+    background: #fff;
   }
   .pages {
-      text-align: right;
+    text-align: right;
+    padding: 10px;
+    border-radius: 4px;
+    background: #fff;
   }
 }
 </style>
