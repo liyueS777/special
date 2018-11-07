@@ -6,7 +6,12 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  mounted(){
+    // document.querySelector("#loadingWrap").style.display = 'none';
+    document.querySelector("#loadingWrap").classList.add("loadingWrap-animate")
+    //loadingWrap-animate
+  }
 }
 </script>
 

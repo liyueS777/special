@@ -1,12 +1,80 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>special</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+  <meta name="description" content="益爱民政管理后台，益爱管理后台系统，益爱管理后台" />
+  <meta name="keywords" content="益爱民政管理后台，益爱管理后台系统，益爱管理后台" />
+  <title>数据监控</title>
+  <style>
+    html,
+    body {
+      position: relative;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .loadingWrap {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      background: #fff;
+
+    }
+    .loadingWrap-animate {
+      animation:fadeOut 1.5s ease-in-out both;
+    }
+    .loadingWrap .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: url("./static/loading/timg.gif") no-repeat;
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px;
+    }
+
+    @-webkit-keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
+    .fadeOut {
+      -webkit-animation-name: fadeOut;
+      animation-name: fadeOut;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="loadingWrap" id="loadingWrap">
+    <div class="loading"></div>
+  </div>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
 </html>
