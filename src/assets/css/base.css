@@ -301,6 +301,10 @@ a.gray{
         background:#FFF;
     }
 }
-
+/* 背景阴影效果
+ */
+ .bg-shadow {
+     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !important;
+ }
 
 

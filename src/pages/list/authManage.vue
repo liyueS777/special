@@ -1,17 +1,17 @@
 
 <template>
     <div class="authManage">
-        <el-row class="authManage-module" :gutter="20">
+        <el-row class="authManage-module bg-shadow" :gutter="20">
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
         </el-row>
-        <el-row class="authManage-module" :gutter="20">
+        <el-row class="authManage-module bg-shadow" :gutter="20">
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
         </el-row>
-        <div class="line-l">
+        <div class="line-l bg-shadow">
             <el-input style="width:300px;margin-right:10px;" placeholder="请输入用户手机号查询" v-model="phone" class="input-with-select">
                 <el-button slot="append" icon="el-icon-search" size="mini"></el-button>
             </el-input>
@@ -23,7 +23,7 @@
                       :fit="true"
                       border
                       stripe
-                      class="authManagetData"
+                      class="authManagetData bg-shadow"
                       ref="multipleTable"
                       :data="authManageList"
                       tooltip-effect="dark">
@@ -90,7 +90,7 @@
                     <el-pagination
                       @current-change="handleRunlist"
                       :page-size="pageSize"
-                      class="pages"
+                      class="pages bg-shadow"
                       background
                       :current-page="currentPage"
                       layout="total,prev, pager, next"
@@ -103,16 +103,16 @@
 export default {
   data() {
     return {
-        phone: "",
-        authManageList:[1,2,3,4],
-        pageSize:10,
-        currentPage:1,
-        totalPage:2
+      phone: "",
+      authManageList: [1, 2, 3, 4],
+      pageSize: 10,
+      currentPage: 1,
+      totalPage: 2
     };
   },
-  methods:{
-    handleRunlist(page){
-        console.log(page)
+  methods: {
+    handleRunlist(page) {
+      console.log(page);
     },
     getRowClass({ row, column, rowIndex, columnIndex }) {
       if (rowIndex == 0) {
@@ -128,6 +128,8 @@ export default {
 <style lang="less">
 .authManage {
   .authManage-module {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     margin-bottom: 10px;
     background: #fff;
     padding: 10px;
@@ -137,17 +139,17 @@ export default {
         background: #3ac5e6;
         height: 30px;
         line-height: 30px;
-        border-radius:4px;
-        color:#fff;
+        border-radius: 4px;
+        color: #fff;
       }
     }
   }
   .authManagetData {
-      margin: 20px auto;
-      border-radius: 4px;
+    margin: 20px auto;
+    border-radius: 4px;
   }
   .line-l {
-    padding:10px 10px 10px 15px;
+    padding: 10px 10px 10px 15px;
     border-radius: 4px;
     background: #fff;
   }

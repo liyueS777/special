@@ -1,6 +1,6 @@
 <template>
     <div class="list-index">
-        <el-row class="index-module" :gutter="20">
+        <el-row class="index-module bg-shadow" :gutter="20">
             <el-col :span="3"><router-link class="link-a" :to="{name:'runList'}">设备运行列表</router-link></el-col>
             <el-col :span="3"><router-link class="link-a" :to="{name:'IDused'}">试用ID使用记录</router-link></el-col>
             <el-col :span="3"><router-link class="link-a" :to="{name:'authManage'}">授权码管理</router-link></el-col>
@@ -35,9 +35,10 @@ export default {
         .index-module {
             background: #fff;
             margin:0 !important;
-            border-bottom: 1px solid #c0c4cc;
+            // border-bottom: 1px solid #c0c4cc;
             padding:20px 0 20px 20px;
             box-sizing: border-box;
+            // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
         }
         .router-link-active {
             background:#409EFF !important;

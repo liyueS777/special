@@ -1,16 +1,16 @@
 <template>
     <div class="runList">
-        <el-row class="runList-module" :gutter="20">
+        <el-row class="runList-module bg-shadow" :gutter="20">
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
         </el-row>
-        <el-row class="runList-module" :gutter="20">
+        <el-row class="runList-module bg-shadow" :gutter="20">
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
         </el-row>
-        <div class="line-l">
+        <div class="line-l bg-shadow">
             <el-input style="width:300px;margin-right:10px;;" placeholder="请输入用户手机号查询" v-model="phone" class="input-with-select">
                 <el-button slot="append" icon="el-icon-search" size="mini"></el-button>
             </el-input>
@@ -23,7 +23,7 @@
                       :fit="true"
                       border
                       stripe
-                      class="runListData"
+                      class="runListData bg-shadow"
                       ref="multipleTable"
                       :data="runList"
                       tooltip-effect="dark">
@@ -90,7 +90,7 @@
                     <el-pagination
                       @current-change="handleRunlist"
                       :page-size="pageSize"
-                      class="pages"
+                      class="pages bg-shadow"
                       background
                       :current-page="currentPage"
                       layout="total,prev, pager, next"
@@ -128,6 +128,8 @@ export default {
 <style lang="less">
 .runList {
   .runList-module {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     margin-bottom: 10px;
     background: #fff;
     padding: 10px;
@@ -138,7 +140,7 @@ export default {
         height: 30px;
         line-height: 30px;
         border-radius: 4px;
-        color:#fff;
+        color: #fff;
       }
     }
   }

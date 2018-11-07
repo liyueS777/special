@@ -1,11 +1,11 @@
 <template>
     <div class="IDused">
-        <el-row class="IDused-module" :gutter="20">
+        <el-row class="IDused-module bg-shadow" :gutter="20">
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
             <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
         </el-row>
-        <div class="line-l">
+        <div class="line-l bg-shadow">
             <el-button size="mini" type="success" @click.native="create">创建试用ID</el-button>
         </div>
         <el-table
@@ -14,7 +14,7 @@
             :fit="true"
             border
             stripe
-            class="IDusedListData"
+            class="IDusedListData bg-shadow"
             ref="multipleTable"
             :data="IDusedList"
             tooltip-effect="dark">
@@ -82,7 +82,7 @@
         <el-pagination
             @current-change="handleRunlist"
             :page-size="pageSize"
-            class="pages"
+            class="pages bg-shadow"
             background
             :current-page="currentPage"
             layout="total,prev, pager, next"
@@ -192,6 +192,8 @@ export default {
 <style lang="less">
 .IDused {
   .IDused-module {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     margin-bottom: 20px;
     background: #fff;
     padding: 10px;
@@ -202,7 +204,7 @@ export default {
         height: 30px;
         line-height: 30px;
         border-radius: 4px;
-        color:#fff;
+        color: #fff;
       }
     }
   }

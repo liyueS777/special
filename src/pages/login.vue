@@ -1,18 +1,22 @@
 <template>
-    <div class="login">
-        <el-form :model="ruleForm" label-position="top" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="用户名" prop="username">
-                <el-input v-model="ruleForm.username"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="password">
-                <el-input v-model="ruleForm.password" type="password"></el-input>
-            </el-form-item>
-            <el-form-item style="text-align:center">
-                <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即创建</el-button>
-                <el-button @click="resetForm('ruleForm')" size="mini">重置</el-button>
-            </el-form-item>
-        </el-form>
-    </div>
+  <div class="login-wrap">
+    <div class="login bg-shadow">
+          <h2>欢迎来到XXX管理系统</h2>
+          <el-form :model="ruleForm" label-position="left" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+              <el-form-item label="用户名" prop="username" class="ll">
+                  <el-input v-model="ruleForm.username" class="ii"></el-input>
+              </el-form-item>
+              <el-form-item label="密码" prop="password" class="ll">
+                  <el-input v-model="ruleForm.password" type="password" class="ii"></el-input>
+              </el-form-item>
+              <el-form-item style="text-align:center" class="action">
+                  <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即创建</el-button>
+                  <el-button @click="resetForm('ruleForm')" size="mini">重置</el-button>
+              </el-form-item>
+          </el-form>
+      </div>
+  </div>
+    
 </template>
 
 <script>
@@ -54,16 +58,41 @@ export default {
 </script>
 
 <style lang="less">
-
+  .login-wrap {
+    height: 100%;
+    position: relative;
+    background: url("https://mzadmin.yiaitech.com/mz/static/css/../../static/img/bg.54679c2.jpg") no-repeat;
+    background-size: cover;
     .login {
-        width: 300px;
+      h2 {
+        font-size: 18px;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+        width: 310px;
         padding: 20px;
-        border: 1px solid #000;
+        // border: 1px solid #000;
         border-radius:4px;
         position: absolute;
         top:50%;
         left:50%;
+        background: #fff;
         transform:translate(-50%,-50%);
+        .ll {
+          >label {
+            width: 68px !important;
+          }
+          >div {
+            margin-left:68px !important;
+          }
+        }
+        .action {
+          >div {
+            margin-left: 0 !important;
+          }
+        }
     }
+  }
+    
 
 </style>
