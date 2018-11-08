@@ -6,10 +6,19 @@ import router from './router'
 import ElementUI from 'element-ui';
 import '@/assets/css/base.css'
 import 'element-ui/lib/theme-chalk/index.css';
-
+import './config/vueConfig'
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 
+// 路由拦截
+router.beforeEach((to, from, next) => {
+  next()
+});
+
+router.afterEach( to => {
+  
+  console.log('ttt:',to)
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -29,6 +29,11 @@ module.exports = {
       '@': resolve('src'),
     }
   },
+  externals:{
+    'vue-router':'VueRouter',
+    'vuex':'vuex',
+    'axios':"axios"
+  },
   module: {
     rules: [{
         test: /\.vue$/,
