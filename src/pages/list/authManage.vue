@@ -2,14 +2,15 @@
 <template>
     <div class="authManage">
         <el-row class="authManage-module bg-shadow" :gutter="20">
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
+            <el-col :span="3"><div class="num">授权码总数：{{authCodeData.totalCount}}</div></el-col>
+            <el-col :span="3"><div class=" num">已使用总数：{{authCodeData.usedCount}}</div></el-col>
+            <el-col :span="3"><div class="num">未使用总数：{{authCodeData.unusedCount}}</div></el-col>
         </el-row>
         <el-row class="authManage-module bg-shadow" :gutter="20">
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
+            <el-col :span="3"><div class="num">上月生成：{{authCodeData.lastMonthCreateCount}}</div></el-col>
+            <!-- <el-col :span="3"><div class="num">上月续费：{{authCodeData.totalCount}}</div></el-col> -->
+            <el-col :span="3"><div class="num">本月生成 ：{{authCodeData.thisMonthCreateCount}}</div></el-col>
+            <!-- <el-col :span="3"><div class="num">本月续费：{{authCodeData.totalCount}}</div></el-col> -->
         </el-row>
         <div class="line-l bg-shadow">
             <el-input style="width:300px;margin-right:10px;" placeholder="请输入用户手机号查询" v-model="phone" class="input-with-select">
@@ -41,10 +42,10 @@
                           header-align="center"
                           prop="account"
                           label="授权码"
-                          width="120"
+                          min-width="140"
                           show-overflow-tooltip
                           >
-                          <template slot-scope="scope">{{ 1 }}</template>
+                          <template slot-scope="scope">{{ scope.row.invitationCode }}</template>
                           
                       </el-table-column>
                       <el-table-column
@@ -52,8 +53,11 @@
                           header-align="center"
                           prop="deadline"
                           label="认证码"
+                          min-width="140"
+                          show-overflow-tooltip
                           >
                           <template slot-scope="scope">
+                            {{ scope.row.invitationCode }}
                           </template>
                       </el-table-column>
                       <el-table-column
@@ -64,7 +68,7 @@
                           show-overflow-tooltip>
                           
                           <template slot-scope="scope">
-                              
+                              {{ scope.row.creatTime | translateToDate }}
                           </template>
                           
                       </el-table-column>
@@ -72,8 +76,10 @@
                           align="center"
                           header-align="center"
                           prop="status"
+                          show-overflow-tooltip
                           label="使用时间">
                           <template slot-scope="scope">
+                            {{ scope.row.activateTime | translateToDate }}
                           </template>
                       </el-table-column>
                       <!-- <el-table-column
@@ -100,17 +106,59 @@
 </template>
 
 <script>
+import { getAuthCodeData,getAuthCodeList } from "@/config/api";
 export default {
   data() {
     return {
+      authCodeData: {
+        lastMonthCreateCount: 0,
+        thisMonthCreateCount: 0,
+        totalCount: 0,
+        unusedCount: 0,
+        usedCount: 0
+      },
+
       phone: "",
-      authManageList: [1, 2, 3, 4],
+      authManageList: [],
       pageSize: 10,
       currentPage: 1,
       totalPage: 2
     };
   },
+  created() {
+    this.getAuthCodeData();
+    this.getAuthCodeList(this.currentPage,this.pageSize)
+  },
   methods: {
+    getAuthCodeList(page,limit){
+      getAuthCodeList({
+        page,
+        limit,
+      })
+      .then(res => {
+          if (res.code == 1) {
+            this.authManageList = res.data;
+          } else {
+            this.$message.warning("查询授权码列表异常~");
+          }
+        })
+        .catch(e => {
+          this.$message.warning("查询授权码列表异常~");
+        });
+    },
+    getAuthCodeData() {
+      getAuthCodeData()
+        .then(res => {
+          if (res.code == 1) {
+            this.authCodeData = res.data;
+          } else {
+            this.$message.warning("查询授权码数据统计异常~");
+          }
+        })
+        .catch(e => {
+          this.$message.warning("查询授权码数据统计异常~");
+        });
+    },
     handleRunlist(page) {
       console.log(page);
     },
@@ -137,7 +185,7 @@ export default {
       text-align: center;
       .num {
         background: #3ac5e6;
-        height: 30px;
+        // height: 30px;
         line-height: 30px;
         border-radius: 4px;
         color: #fff;

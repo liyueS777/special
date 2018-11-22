@@ -1,14 +1,15 @@
 <template>
     <div class="runList">
         <el-row class="runList-module bg-shadow" :gutter="20">
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
+            <el-col :span="3"><div class="num">设备总数：{{runDataMessage.totalCount}}</div></el-col>
+            <el-col :span="3"><div class="num">正常设备：{{runDataMessage.usableCount}}</div></el-col>
+            <el-col :span="3"><div class="num">过期设备：{{runDataMessage.overdueCount}}</div></el-col>
         </el-row>
         <el-row class="runList-module bg-shadow" :gutter="20">
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
+            <el-col :span="3"><div class="num">上月新激活：{{runDataMessage.lastMonthActivateCount}}</div></el-col>
+            <!-- <el-col :span="3"><div class="num">上月新授权：5689</div></el-col> -->
+            <el-col :span="3"><div class="num">本月新激活：{{runDataMessage.thisMonthActivateCount}}</div></el-col>
+            <!-- <el-col :span="3"><div class="num">本月续费：5689</div></el-col> -->
         </el-row>
         <div class="line-l bg-shadow">
             <el-input style="width:300px;margin-right:10px;;" placeholder="请输入用户手机号查询" v-model="phone" class="input-with-select">
@@ -41,10 +42,10 @@
                           header-align="center"
                           prop="account"
                           label="用户账号"
-                          width="120"
+                          width="140"
                           show-overflow-tooltip
                           >
-                          <template slot-scope="scope">{{ 1 }}</template>
+                          <template slot-scope="scope">{{ scope.row.phone }}</template>
                           
                       </el-table-column>
                       <el-table-column
@@ -54,9 +55,10 @@
                           label="有效截止时间"
                           >
                           <template slot-scope="scope">
+                            {{ scope.row.validTime | translateToDate }}
                           </template>
                       </el-table-column>
-                      <el-table-column
+                      <!-- <el-table-column
                           align="center"
                           header-align="center"
                           prop="num"
@@ -67,13 +69,14 @@
                               
                           </template>
                           
-                      </el-table-column>
+                      </el-table-column> -->
                       <el-table-column
                           align="center"
                           header-align="center"
                           prop="status"
                           label="程序状态">
                           <template slot-scope="scope">
+                            {{scope.row.equipmentState}}
                           </template>
                       </el-table-column>
                       <!-- <el-table-column
@@ -100,17 +103,55 @@
 </template>
 
 <script>
+import { getRunList, getRunData } from "@/config/api";
 export default {
   data() {
     return {
+      runDataMessage: {
+        lastMonthActivateCount: 0,
+        overdueCount: 0,
+        thisMonthActivateCount: 0,
+        totalCount: 0,
+        usableCount: 0
+      },
       phone: "",
-      runList: [1, 2, 3, 4],
+      runList: [],
       pageSize: 10,
       currentPage: 1,
       totalPage: 2
     };
   },
+  created() {
+    this.getRunList(this.currentPage, this.pageSize);
+    this.getRunData();
+  },
   methods: {
+    getRunData() {
+      getRunData()
+        .then(res => {
+          if(res.code==1){
+            this.runDataMessage = res.data
+          }
+          else{
+            this.$message.warning("查询设备运数据统计异常~");
+          }
+        })
+        .catch(e => {});
+    },
+    getRunList(page, limit) {
+      getRunList({
+        page,
+        limit
+      })
+        .then(res => {
+          if (res.code == 1) {
+            this.runList = res.data;
+          } else {
+            this.$message.warning("查询设备运行列表数据异常~");
+          }
+        })
+        .catch(e => {});
+    },
     handleRunlist(page) {
       console.log(page);
     },
@@ -137,7 +178,7 @@ export default {
       text-align: center;
       .num {
         background: #3ac5e6;
-        height: 30px;
+        // height: 30px;
         line-height: 30px;
         border-radius: 4px;
         color: #fff;

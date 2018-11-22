@@ -3,8 +3,8 @@
     <div class="login bg-shadow">
           <h2>欢迎来到XXX管理系统</h2>
           <el-form :model="ruleForm" label-position="left" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-              <el-form-item label="用户名" prop="username" class="ll">
-                  <el-input v-model="ruleForm.username" class="ii"></el-input>
+              <el-form-item label="用户名" prop="phone" class="ll">
+                  <el-input v-model="ruleForm.phone" class="ii"></el-input>
               </el-form-item>
               <el-form-item label="密码" prop="password" class="ll">
                   <el-input v-model="ruleForm.password" type="password" class="ii"></el-input>
@@ -20,15 +20,16 @@
 </template>
 
 <script>
+import { login } from '@/config/api'
 export default {
   data() {
     return {
       ruleForm: {
-        username:"",
+        phone:"",
         password:''
       },
       rules: {
-        username: [
+        phone: [
           { required: true, message: "请输入用户名", trigger: "blur" },
         //   { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
@@ -43,6 +44,13 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          // login(this.ruleForm)
+          // .then(res=>{
+
+          // })
+          // .catch(e=>{
+
+          // })
           this.$router.push({name:"runList"})
         } else {
           console.log("error submit!!");

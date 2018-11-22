@@ -1,18 +1,20 @@
 <template>
     <div class="IDused">
         <el-row class="IDused-module bg-shadow" :gutter="20">
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
-            <el-col :span="3"><div class="num">设备总数：5689</div></el-col>
+            <el-col :span="3"><div class="num">试用ID总数：{{dataStatics.totalCount}}</div></el-col>
+            <el-col :span="3"><div class="num">正常ID数量：{{dataStatics.useableCount}}</div></el-col>
+            <el-col :span="3"><div class="num">停用ID数量数：{{dataStatics.unusableCount}}</div></el-col>
+            <el-col :span="3"><div class="num">上月试用次数：{{dataStatics.lastMonthCount}}</div></el-col>
+            <el-col :span="3"><div class="num">本月试用次数：{{dataStatics.thisMonthCount}}</div></el-col>
         </el-row>
         <div class="line-l bg-shadow">
-            <el-button size="mini" type="success" @click.native="create">创建试用ID</el-button>
+            <el-button size="mini" type="success" @click.native="createID">创建试用ID</el-button>
         </div>
         <el-table
             header-row-class-name="myTablee"
             :header-cell-style="getRowClass"
             :fit="true"
-            border
+            border 
             stripe
             class="IDusedListData bg-shadow"
             ref="multipleTable"
@@ -109,9 +111,17 @@
 </template>
 
 <script>
+import { getTrialAccounts, getStatistics } from "@/config/api";
 export default {
   data() {
     return {
+      dataStatics: {
+        lastMonthCount: 0,
+        thisMonthCount: 0,
+        totalCount: 0,
+        unusableCount: 0,
+        useableCount: 0
+      },
       phone: "",
       IDusedList: [1, 2, 3, 4],
       pageSize: 10,
@@ -130,7 +140,38 @@ export default {
       }
     };
   },
+  created() {
+    this.getStatistics();
+    this.getTrialAccounts(this.createIDusedForm,this.pageSize)
+  },
   methods: {
+    getStatistics() {
+      getStatistics()
+        .then(res => {
+          if (res.code == 1) {
+            this.dataStatics = res.data;
+          } else {
+            this.$message.warning("查询试用ID数据统计异常~");
+          }
+        })
+        .catch(e => {
+          this.$message.warning("查询试用ID数据统计异常~");
+        });
+    },
+    getTrialAccounts(page,limit) {
+      getTrialAccounts({
+        page,limit
+      })
+        .then(res => {
+          if (res.code == 1) {
+          } else {
+            this.$message.warning("查询试用ID列表数据异常~");
+          }
+        })
+        .catch(e => {
+          this.$message.warning("查询试用ID列表数据异常~");
+        });
+    },
     getRowClass({ row, column, rowIndex, columnIndex }) {
       if (rowIndex == 0) {
         return "background:#498e26;color:#fff";
@@ -138,7 +179,7 @@ export default {
         return "";
       }
     },
-    create() {
+    createID() {
       this.IDusedVisible = true;
       this.createIDusedForm.id &&
         this.createIDusedForm.name &&
@@ -201,7 +242,7 @@ export default {
       text-align: center;
       .num {
         background: #3ac5e6;
-        height: 30px;
+        // height: 30px;
         line-height: 30px;
         border-radius: 4px;
         color: #fff;

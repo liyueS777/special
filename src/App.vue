@@ -5,11 +5,9 @@
 </template>
 
 <script>
-import {verify} from './config/api.js'
 export default {
   name: 'App',
   mounted(){
-    verify({a:1})
     var animations = {
     "animation"      : "animationend",
     "OAnimation"     : "oAnimationEnd",
