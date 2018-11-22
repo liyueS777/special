@@ -7,10 +7,10 @@
                   <el-input v-model="ruleForm.phone" class="ii"></el-input>
               </el-form-item>
               <el-form-item label="密码" prop="password" class="ll">
-                  <el-input v-model="ruleForm.password" type="password" class="ii"></el-input>
+                  <el-input v-model="ruleForm.password" type="password" class="ii" @keyup.enter.native="submitForm('ruleForm')"></el-input>
               </el-form-item>
               <el-form-item style="text-align:center" class="action">
-                  <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即创建</el-button>
+                  <el-button type="primary" @click.native="submitForm('ruleForm')" size="mini">立即创建</el-button>
                   <el-button @click="resetForm('ruleForm')" size="mini">重置</el-button>
               </el-form-item>
           </el-form>
