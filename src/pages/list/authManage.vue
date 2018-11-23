@@ -13,10 +13,10 @@
             <!-- <el-col :span="3"><div class="num">本月续费：{{authCodeData.totalCount}}</div></el-col> -->
         </el-row>
         <div class="line-l bg-shadow">
-            <el-input style="width:300px;margin-right:10px;" placeholder="请输入用户手机号查询" v-model="phone" class="input-with-select">
+            <!-- <el-input style="width:300px;margin-right:10px;" placeholder="请输入用户手机号查询" v-model="phone" class="input-with-select">
                 <el-button slot="append" icon="el-icon-search" size="mini"></el-button>
-            </el-input>
-            <el-button size="medium" type="success">生成授权码</el-button>
+            </el-input> -->
+            <el-button size="medium" type="success" @click.native="createAuthCode">生成授权码</el-button>
         </div>
         <el-table
                       header-row-class-name="myTablee"
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { getAuthCodeData,getAuthCodeList } from "@/config/api";
+import { getAuthCodeData,getAuthCodeList,createInvitationCode } from "@/config/api";
 export default {
   data() {
     return {
@@ -130,6 +130,40 @@ export default {
     this.getAuthCodeList(this.currentPage,this.pageSize)
   },
   methods: {
+    createAuthCode(){
+      this.$confirm('本次生成授权码一次生成 10 个', '提示', {
+          distinguishCancelAndClose: true,
+          type: "warning",
+          confirmButtonText: '开始生成',
+          cancelButtonText: '取消'
+        })
+          .then(() => {
+            createInvitationCode({count:10})
+            .then(res=>{
+              this.$message({
+                  type: 'success',
+                  message: res.code==1?'生成授权码操作成功~':'生成授权码操作异常'
+              });
+              res.code ==1 && this.getAuthCodeList(this.currentPage,this.pageSize)
+            })
+            .catch(e=>{
+              this.$message({
+                  type: 'success',
+                  message: '数据异常，请稍后重试'
+              })
+            })
+
+
+          })
+          .catch(action => {
+            this.$message({
+              type: 'info',
+              message: action === 'cancel'
+                ? '已取消本次操作'
+                : '已取消本次操作'
+            })
+          });
+    },
     getAuthCodeList(page,limit){
       getAuthCodeList({
         page,

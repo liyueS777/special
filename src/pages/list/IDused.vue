@@ -80,8 +80,8 @@
                 label="操作"
                 >
                 <template slot-scope="scope">
-                <el-button size="mini" type="primary" v-if="scope.row.useable==0">启动</el-button>
-                <el-button size="mini" type="danger" v-else>停止</el-button>
+                <el-button size="mini" type="primary" v-if="scope.row.useable==0" @click.native="operateUserId(scope.row.id,scope.row.useable==1?0:1)">启动</el-button>
+                <el-button size="mini" type="danger" v-else @click.native="operateUserId(scope.row.id,scope.row.useable==1?0:1)">停止</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -106,7 +106,7 @@
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-                <el-button @click="resetForm('ruleForm')">重置</el-button>
+                <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
               </el-form-item>
             </el-form>
           </div>
@@ -115,9 +115,20 @@
 </template>
 
 <script>
-import { getTrialAccounts, getStatistics,createTrialAccounts,postTrialID } from "@/config/api";
+import { getTrialAccounts, getStatistics,createTrialAccounts,postTrialID,operationTrialAccounts } from "@/config/api";
 export default {
   data() {
+    var regPhone=/^[1][3,4,5,7,8][0-9]{9}$/;
+    var validatePhone = (rule, value, callback) => {
+      console.log(rule, value, callback)
+        if (!value || !value.trim()) {
+          callback(new Error('代理名称不能为空'));
+        } else if (!regPhone.test(value)) {
+          callback(new Error('暂时只支持手机号格式,请输入正确的手机号格式'));
+        } else {
+          callback();
+        }
+    };
     return {
       closeGetDataFlag:false,
       dataStatics: {
@@ -139,7 +150,7 @@ export default {
       },
       rules: {
         phone: [
-          { required: true, message: "请输入代理名称", trigger: "change" }
+          { required: true, validator: validatePhone, trigger: "change" }
         ],
         trialAccount: [{ required: true, message: "请输入代理id", trigger: "change" }]
       }
@@ -150,6 +161,22 @@ export default {
     this.getTrialAccounts(this.currentPage,this.pageSize)
   },
   methods: {
+    operateUserId(id,targetUseable){
+      operationTrialAccounts({
+        id,
+        useable:targetUseable
+      })
+      .then(res=>{
+        if(res.code==1){
+          this.getTrialAccounts(this.currentPage,this.pageSize)
+        }else {
+          this.$message.warning('操作异常，请稍后再试~')
+        }
+      })
+      .catch(e=>{
+        this.$message.warning('操作异常，请稍后再试~')
+      })
+    },
     getStatistics() {
       getStatistics()
         .then(res => {
@@ -228,7 +255,7 @@ export default {
             }
           })
           .catch(e=>{
-            this.$message.success("创建异常，请稍后再试");
+            this.$message.warning("创建异常，请稍后再试");
           })
           
           

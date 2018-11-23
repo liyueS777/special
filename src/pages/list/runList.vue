@@ -12,11 +12,11 @@
             <!-- <el-col :span="3"><div class="num">本月续费：5689</div></el-col> -->
         </el-row>
         <div class="line-l bg-shadow">
-            <el-input style="width:300px;margin-right:10px;;" placeholder="请输入用户手机号查询" v-model="phone" class="input-with-select">
-                <el-button slot="append" icon="el-icon-search" size="mini"></el-button>
+            <el-input style="width:300px;margin-right:10px;;" placeholder="请输入用户手机号查询" v-model="phone" @input="whenNull" @keyup.native.enter="searchByPhone" class="input-with-select">
+                <el-button slot="append" icon="el-icon-search" size="mini" @click.native="searchByPhone"></el-button>
             </el-input>
-            <el-button size="medium" plain type="primary">导出数据</el-button>
-            <el-button size="medium" plain type="success">导出全部数据</el-button>
+            <!-- <el-button size="medium" plain type="primary">导出数据</el-button> -->
+            <!-- <el-button size="medium" plain type="success">导出全部数据</el-button> -->
         </div>
         <el-table
                       header-row-class-name="myTablee"
@@ -103,7 +103,8 @@
 </template>
 
 <script>
-import { getRunList, getRunData } from "@/config/api";
+import { getRunList, getRunData,getEquipmentByPhone } from "@/config/api";
+const regNum = /^[0-9]*$/;
 export default {
   data() {
     return {
@@ -114,6 +115,9 @@ export default {
         totalCount: 0,
         usableCount: 0
       },
+
+      //模糊查询字段
+      searchFlag:false,
       phone: "",
       runList: [],
       pageSize: 10,
@@ -122,10 +126,20 @@ export default {
     };
   },
   created() {
-    this.getRunList(this.currentPage, this.pageSize);
+    this.getRunList(this.currentPage, this.pageSize,1);
     this.getRunData();
   },
   methods: {
+    //兼顾一下为空的时候用户不会点击搜索和回车
+    whenNull(key){
+      console.log(1111,key)
+      if(!key){
+        this.getRunList(1, this.pageSize,1);
+      }
+    },
+    searchByPhone(){
+      this.getRunList(1,this.pageSize,2)
+    },
     getRunData() {
       getRunData()
         .then(res => {
@@ -138,13 +152,30 @@ export default {
         })
         .catch(e => {});
     },
-    getRunList(page, limit) {
-      getRunList({
+    getRunList(page, limit,type) {
+      var data = {
         page,
         limit
-      })
+      };
+      // 1 代表不进行模糊查询  2是进行模糊查询
+      if(type==2){
+        if(!this.phone || !this.phone.trim()){
+          // this.$message.warning('输入的内容不能为空，必须是数字类型~');
+          // return;
+        }
+        if(!regNum.test(this.phone)){
+          this.$message.warning('输入的内容格式不正确，必须是数字类型~');
+          return;
+        };
+        data["phone"] = this.phone
+      }
+      getRunList(data)
         .then(res => {
           if (res.code == 1) {
+            if(type==2){
+              this.currentPage = 1
+              this.searchFlag = true;
+            };
             this.runList = res.data.equipmentsList
             this.totalCount = res.data.totalCount
           } else {
@@ -156,7 +187,12 @@ export default {
     handleRunlist(page) {
       console.log(page);
       this.currentPage =page
-      this.getRunList(page,this.pageSize)
+      if(this.searchFlag && this.phone){
+        var type = 2
+      }else {
+        var type =1;
+      }
+      this.getRunList(page,this.pageSize,type)
     },
     getRowClass({ row, column, rowIndex, columnIndex }) {
       if (rowIndex == 0) {
