@@ -76,7 +76,7 @@
                           prop="status"
                           label="程序状态">
                           <template slot-scope="scope">
-                            {{scope.row.equipmentState}}
+                            {{ scope.row.equipmentState==0?'已过期':(scope.row.equipmentState==1?'未过期':'未激活') }}
                           </template>
                       </el-table-column>
                       <!-- <el-table-column
@@ -97,7 +97,7 @@
                       background
                       :current-page="currentPage"
                       layout="total,prev, pager, next"
-                      :total="totalPage">
+                      :total="totalCount">
                     </el-pagination>
     </div>
 </template>
@@ -118,7 +118,7 @@ export default {
       runList: [],
       pageSize: 10,
       currentPage: 1,
-      totalPage: 2
+      totalCount: 0
     };
   },
   created() {
@@ -145,7 +145,8 @@ export default {
       })
         .then(res => {
           if (res.code == 1) {
-            this.runList = res.data;
+            this.runList = res.data.equipmentsList
+            this.totalCount = res.data.totalCount
           } else {
             this.$message.warning("查询设备运行列表数据异常~");
           }
@@ -154,10 +155,12 @@ export default {
     },
     handleRunlist(page) {
       console.log(page);
+      this.currentPage =page
+      this.getRunList(page,this.pageSize)
     },
     getRowClass({ row, column, rowIndex, columnIndex }) {
       if (rowIndex == 0) {
-        return "background:#498e26;color:#fff";
+        return "background:#409eff;color:#fff";
       } else {
         return "";
       }

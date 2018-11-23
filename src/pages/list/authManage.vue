@@ -57,7 +57,7 @@
                           show-overflow-tooltip
                           >
                           <template slot-scope="scope">
-                            {{ scope.row.invitationCode }}
+                            {{ scope.row.verificationCode }}
                           </template>
                       </el-table-column>
                       <el-table-column
@@ -100,7 +100,7 @@
                       background
                       :current-page="currentPage"
                       layout="total,prev, pager, next"
-                      :total="totalPage">
+                      :total="totalCount">
                     </el-pagination>
     </div>
 </template>
@@ -122,7 +122,7 @@ export default {
       authManageList: [],
       pageSize: 10,
       currentPage: 1,
-      totalPage: 2
+      totalCount: 0
     };
   },
   created() {
@@ -137,7 +137,8 @@ export default {
       })
       .then(res => {
           if (res.code == 1) {
-            this.authManageList = res.data;
+            this.authManageList = res.data.invitationCodeList;
+            this.totalCount = res.data.totalCount
           } else {
             this.$message.warning("查询授权码列表异常~");
           }
@@ -150,7 +151,7 @@ export default {
       getAuthCodeData()
         .then(res => {
           if (res.code == 1) {
-            this.authCodeData = res.data;
+            this.authCodeData = res.data
           } else {
             this.$message.warning("查询授权码数据统计异常~");
           }
@@ -161,10 +162,12 @@ export default {
     },
     handleRunlist(page) {
       console.log(page);
+      this.currentPage = page
+      this.getAuthCodeList(page,this.pageSize)
     },
     getRowClass({ row, column, rowIndex, columnIndex }) {
       if (rowIndex == 0) {
-        return "background:#498e26;color:#fff";
+        return "background:#409eff;color:#fff";
       } else {
         return "";
       }

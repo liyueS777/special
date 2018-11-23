@@ -34,10 +34,10 @@
                 header-align="center"
                 prop="account"
                 label="代理名称"
-                width="120"
+                min-width="140"
                 show-overflow-tooltip
                 >
-                <template slot-scope="scope">{{ 1 }}</template>
+                <template slot-scope="scope">{{ scope.row.phone }}</template>
                 
             </el-table-column>
             <el-table-column
@@ -45,8 +45,11 @@
                 header-align="center"
                 prop="deadline"
                 label="试用ID"
+                min-width="140"
+                show-overflow-tooltip
                 >
                 <template slot-scope="scope">
+                  {{ scope.row.trialAcount }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -57,7 +60,7 @@
                 show-overflow-tooltip>
                 
                 <template slot-scope="scope">
-                    
+                    {{ scope.row.updateTime | translateToDate }}
                 </template>
                 
             </el-table-column>
@@ -67,6 +70,7 @@
                 prop="status"
                 label="账号状态">
                 <template slot-scope="scope">
+                  {{ scope.row.useable==0?'不可用':'可用' }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -76,8 +80,8 @@
                 label="操作"
                 >
                 <template slot-scope="scope">
-                <el-button size="mini" type="primary">启动</el-button>
-                <el-button size="mini" type="danger">停止</el-button>
+                <el-button size="mini" type="primary" v-if="scope.row.useable==0">启动</el-button>
+                <el-button size="mini" type="danger" v-else>停止</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -88,17 +92,17 @@
             background
             :current-page="currentPage"
             layout="total,prev, pager, next"
-            :total="totalPage">
+            :total="totalCount">
         </el-pagination>
         <!-- 新增 镇 村 编辑村 的模态框 addTeacherListVisible -->
-        <el-dialog title="创建试用ID" :close-on-click-modal="false" :visible.sync="IDusedVisible">
+        <el-dialog title="创建试用ID" :close-on-click-modal="false" :visible.sync="IDusedVisible" @close="closeModel">
           <div class="handleArea">
             <el-form :model="createIDusedForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-              <el-form-item label="试用ID" prop="id">
-                  <el-input v-model="createIDusedForm.id" placeHoleder="请输入ID"></el-input>
+              <el-form-item label="试用ID" prop="trialAccount">
+                  <el-input v-model="createIDusedForm.trialAccount" placeHoleder="请输入ID" disabled></el-input>
               </el-form-item>
-              <el-form-item label="代理名称" prop="name">
-                  <el-input v-model="createIDusedForm.name" placeHoleder="请输入代理名称"></el-input>
+              <el-form-item label="代理名称" prop="phone">
+                  <el-input v-model="createIDusedForm.phone" placeHoleder="请输入代理名称"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -111,10 +115,11 @@
 </template>
 
 <script>
-import { getTrialAccounts, getStatistics } from "@/config/api";
+import { getTrialAccounts, getStatistics,createTrialAccounts,postTrialID } from "@/config/api";
 export default {
   data() {
     return {
+      closeGetDataFlag:false,
       dataStatics: {
         lastMonthCount: 0,
         thisMonthCount: 0,
@@ -123,33 +128,33 @@ export default {
         useableCount: 0
       },
       phone: "",
-      IDusedList: [1, 2, 3, 4],
+      IDusedList: [],
       pageSize: 10,
       currentPage: 1,
-      totalPage: 4,
+      totalCount: 0,
       IDusedVisible: false,
       createIDusedForm: {
-        name: "",
-        id: ""
+        phone: "",
+        trialAccount: ""
       },
       rules: {
-        name: [
+        phone: [
           { required: true, message: "请输入代理名称", trigger: "change" }
         ],
-        id: [{ required: true, message: "请输入代理id", trigger: "change" }]
+        trialAccount: [{ required: true, message: "请输入代理id", trigger: "change" }]
       }
     };
   },
   created() {
     this.getStatistics();
-    this.getTrialAccounts(this.createIDusedForm,this.pageSize)
+    this.getTrialAccounts(this.currentPage,this.pageSize)
   },
   methods: {
     getStatistics() {
       getStatistics()
         .then(res => {
           if (res.code == 1) {
-            this.dataStatics = res.data;
+            this.dataStatics = res.data
           } else {
             this.$message.warning("查询试用ID数据统计异常~");
           }
@@ -164,6 +169,8 @@ export default {
       })
         .then(res => {
           if (res.code == 1) {
+            this.IDusedList = res.data.trialAccountsList
+            this.totalCount = res.data.totalCount
           } else {
             this.$message.warning("查询试用ID列表数据异常~");
           }
@@ -174,49 +181,57 @@ export default {
     },
     getRowClass({ row, column, rowIndex, columnIndex }) {
       if (rowIndex == 0) {
-        return "background:#498e26;color:#fff";
+        return "background:#409eff;color:#fff";
       } else {
         return "";
       }
     },
+    closeModel(k){
+      console.log(k,'环比了');
+      this.resetForm("ruleForm");
+      this.closeGetDataFlag && this.getTrialAccounts(this.currentPage,this.pageSize)
+    },
     createID() {
+      this.closeGetDataFlag = false
       this.IDusedVisible = true;
-      this.createIDusedForm.id &&
-        this.createIDusedForm.name &&
-        this.resetForm("ruleForm");
+      // this.createIDusedForm.phone &&
+      //   this.createIDusedForm.trialAccount &&
+      //   this.resetForm("ruleForm");
+      createTrialAccounts()
+      .then(res=>{
+        if(res.code==1){
+          this.createIDusedForm.trialAccount = res.data
+        }else {
+          this.IDusedVisible = false;
+          this.$message.warning('试用ID生成异常，请稍后重试~')
+        }
+      })
+      .catch(e=>{
+        this.IDusedVisible = false;
+        this.$message.warning('试用ID生成异常，请稍后重试~')
+      })
     },
     handleRunlist(page) {
-      console.log(page);
+      this.currentPage =page
+      this.getTrialAccounts(page,this.pageSize)
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log("okok submit!!");
-          this.$message.success("创建成功");
-          setTimeout(() => {
-            this.IDusedVisible = false;
-          }, 1000);
-          //   this.$axios({
-          //     method: "post",
-          //     url: this.$HostMz + "infor/editManager",
-          //     data: {
-          //       accessToken: this.$store.getters.getUserInfo.accessToken,
-          //       id: this.ruleForm2.id,
-          //       name: this.ruleForm2.name,
-          //       phone: this.ruleForm2.phone,
-          //       type: this.ruleForm2.role
-          //     }
-          //   }).then(res => {
-          //     if (res.data.errcode == 0 || res.data.errcode == 1) {
-          //       this.handleEditRoleVisible = false;
-
-          //       this.getChildrenList(
-          //         this.currentPage_Children,
-          //         this.pageSize_Children,
-          //         this.area.id
-          //       );
-          //     }
-          //   });
+          postTrialID(this.createIDusedForm)
+          .then(res=>{
+            if(res.code==1){
+              this.closeGetDataFlag = true;
+              this.IDusedVisible = false;
+            }else {
+              this.$message.success("创建异常，请稍后再试");
+            }
+          })
+          .catch(e=>{
+            this.$message.success("创建异常，请稍后再试");
+          })
+          
+          
         } else {
           console.log("error submit!!");
           return false;
