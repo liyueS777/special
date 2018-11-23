@@ -13,7 +13,7 @@ export const getRunData = (params) => fetch('POST', '/v1/equipmentAccountStatist
 
 
 //login
-export const login = (params) => fetch('POST', '/v1/login', params)
+export const login = (params) => fetch('POST', '/v1/managerLogin', params)
 
 //授权码统计
 

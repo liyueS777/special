@@ -19,6 +19,7 @@
 export default {
     methods:{
         logout(){
+            window.localStorage.removeItem("S_LOGIN_MESSAGE");
             this.$router.push({name:'login'})
         }
     }

@@ -37,6 +37,10 @@ export default new Router({
           component: resolve => require(['@/pages/list/authManage'],resolve)
         }
       ]
+    },
+    {
+      path:'/*',
+      redirect:'/list/runList'
     }
   ]
 })

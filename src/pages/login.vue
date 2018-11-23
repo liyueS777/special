@@ -4,7 +4,7 @@
           <h2>欢迎来到后台管理系统</h2>
           <el-form :model="ruleForm" label-position="left" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
               <el-form-item label="用户名" prop="phone" class="ll">
-                  <el-input v-model="ruleForm.phone" class="ii"></el-input>
+                  <el-input v-model="ruleForm.phone" class="ii" @keyup.enter.native="submitForm('ruleForm')"></el-input>
               </el-form-item>
               <el-form-item label="密码" prop="password" class="ll">
                   <el-input v-model="ruleForm.password" type="password" class="ii" @keyup.enter.native="submitForm('ruleForm')"></el-input>
@@ -41,20 +41,33 @@ export default {
       }
     };
   },
+  created(){
+    console.log('loginnnnnnnnnnn:',this.$route,this.$route.query.redirect)
+  },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // login(this.ruleForm)
-          // .then(res=>{
-
-          // })
-          // .catch(e=>{
-
-          // })
-          this.$router.push({name:"runList"})
+          login(this.ruleForm)
+          .then(res=>{
+            console.log(res)
+            if(res.code==1){
+              window.localStorage.setItem("S_LOGIN_MESSAGE",JSON.stringify({
+                phone:this.ruleForm.phone
+              }));
+              this.$router.push({path:this.$route.query.redirect?this.$route.query.redirect:"/list/runList"});
+              this.$message.success("登陆成功~")
+            }else {
+              this.$message.warning('用户名或密码错误')
+            }
+          })
+          .catch(e=>{
+            console.log(123,e)
+            this.$message.warning('登陆请求异常，请稍后再试~')
+          })
+          
         } else {
-          console.log("error submit!!");
+          this.$message.warning("请输入完整信息~再登陆")
           return false;
         }
       });
