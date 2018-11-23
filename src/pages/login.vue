@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrap">
     <div class="login bg-shadow">
-          <h2>欢迎来到XXX管理系统</h2>
+          <h2>欢迎来到后台管理系统</h2>
           <el-form :model="ruleForm" label-position="left" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
               <el-form-item label="用户名" prop="phone" class="ll">
                   <el-input v-model="ruleForm.phone" class="ii"></el-input>
@@ -69,11 +69,12 @@ export default {
   .login-wrap {
     height: 100%;
     position: relative;
-    background: url("https://mzadmin.yiaitech.com/mz/static/css/../../static/img/bg.54679c2.jpg") no-repeat;
+    background: url("../assets/img/bg1.jpg") no-repeat;
     background-size: cover;
     .login {
       h2 {
         font-size: 18px;
+        text-align: center;
         margin-bottom: 15px;
         font-weight: 600;
       }
