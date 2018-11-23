@@ -1,5 +1,5 @@
 <template>
-  <div class="login-wrap">
+  <div class="login-wrap" :style="{backgroundImage:'url(' + bgImg + ')'}">
     <div class="login bg-shadow">
           <h2>欢迎来到后台管理系统</h2>
           <el-form :model="ruleForm" label-position="left" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -24,6 +24,7 @@ import { login } from '@/config/api'
 export default {
   data() {
     return {
+      bgImg:require('../assets/img/bg1.jpg'),
       ruleForm: {
         phone:"",
         password:''
@@ -69,7 +70,7 @@ export default {
   .login-wrap {
     height: 100%;
     position: relative;
-    background: url("../assets/img/bg1.jpg") no-repeat;
+    background-repeat:no-repeat;
     background-size: cover;
     .login {
       h2 {
