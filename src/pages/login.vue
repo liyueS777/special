@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import md5 from 'md5'
 import { login } from '@/config/api'
 export default {
   data() {
@@ -48,7 +49,12 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          login(this.ruleForm)
+          var u = this.ruleForm.phone
+          var p = md5(this.ruleForm.password)
+          login({
+            phone:u,
+            password:p
+          })
           .then(res=>{
             console.log(res)
             if(res.code==1){
