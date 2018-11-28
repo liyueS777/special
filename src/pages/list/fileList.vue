@@ -6,13 +6,13 @@
         :rules="rules"
         ref="fileForm"
         label-width="100px"
-        class="demo-ruleForm"
+        class="file-ruleForm"
       >
         <el-form-item label="版本名称" prop="name">
-          <el-input v-model="fileForm.name" placeHoleder="请填写版本名称"></el-input>
+          <el-input v-model="fileForm.name" placeholder="请填写版本名称"></el-input>
         </el-form-item>
         <el-form-item label="版本号" prop="version">
-          <el-input v-model="fileForm.version" placeHoleder="请填写版本号"></el-input>
+          <el-input v-model="fileForm.version" placeholder="请填写版本号"></el-input>
         </el-form-item>
         <el-form-item label="级别" prop="model">
             <el-select v-model="fileForm.model" placeholder="请选择级别">
@@ -35,7 +35,7 @@
             </el-select>
         </el-form-item>
         <el-form-item label="版本描述" prop="pageDesp">
-          <el-input v-model="fileForm.pageDesp" placeHoleder="请填写版本描述"></el-input>
+          <el-input v-model="fileForm.pageDesp" placeholder="请填写版本描述"></el-input>
         </el-form-item>
         <el-form-item label="文件" prop="url">
           <upload-file></upload-file>
@@ -138,11 +138,17 @@ export default {
 </script>
 
 <style lang="less">
+::placeholder{
+    color:red;
+}
 .fileUpload-m {
   .line-l {
     padding: 10px 10px 10px 15px;
     border-radius: 4px;
     background: #fff;
+  }
+  .file-ruleForm {
+      width:600px;
   }
 }
 </style>
