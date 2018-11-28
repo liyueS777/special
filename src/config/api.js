@@ -55,3 +55,5 @@ export const getTrialAccounts = (params) => fetch('POST', '/v1/getTrialAccounts'
 // 运行列表号码模糊查询 118.190.208.8:6060/v1/getEquipmentByPhone
 
 export const getEquipmentByPhone = (params) => fetch('POST', '/v1/getEquipmentByPhone', params)
+
+//版本信息上传 uploadFileInfo
