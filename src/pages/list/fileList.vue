@@ -8,13 +8,13 @@
         label-width="100px"
         class="file-ruleForm"
       >
-        <el-form-item label="版本名称" prop="name">
-          <el-input v-model="fileForm.name" placeholder="请填写版本名称"></el-input>
+        <el-form-item label="版本名称" prop="versionName">
+          <el-input v-model="fileForm.versionName" placeholder="请填写版本名称"></el-input>
         </el-form-item>
-        <el-form-item label="版本号" prop="version">
-          <el-input v-model="fileForm.version" placeholder="请填写版本号"></el-input>
+        <el-form-item label="版本号" prop="versionNumber">
+          <el-input v-model="fileForm.versionNumber" placeholder="请填写版本号"></el-input>
         </el-form-item>
-        <el-form-item label="级别" prop="model">
+        <!-- <el-form-item label="级别" prop="model">
             <el-select v-model="fileForm.model" placeholder="请选择级别">
                 <el-option
                 v-for="item in levelList"
@@ -33,23 +33,46 @@
                 :value="item.id">
                 </el-option>
             </el-select>
-        </el-form-item>
-        <el-form-item label="版本描述" prop="pageDesp">
-          <el-input v-model="fileForm.pageDesp" placeholder="请填写版本描述"></el-input>
+        </el-form-item> -->
+        <el-form-item label="版本描述" prop="desc">
+          <el-input v-model="fileForm.desc" placeholder="请填写版本描述"></el-input>
         </el-form-item>
         <el-form-item label="文件" prop="url">
-          <upload-file></upload-file>
+          <upload-file :fileList="fileList" @uploadSuccess="handleUploadSuccess" @uploadRemove="handleUploadRemove"></upload-file>
+        </el-form-item>
+        <el-form-item label="文件包名称" prop="packageName">
+          <el-input v-model="fileForm.packageName" placeholder="请填写文件包名称"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click.native="submitForm('fileForm')">立即创建</el-button>
-          <el-button @click.native="resetForm('fileForm')">重置</el-button>
+          <el-button type="primary" size="small" @click.native="submitForm('fileForm')">立即提交</el-button>
+          <el-button size="small" @click.native="resetForm('fileForm')">重置</el-button>
         </el-form-item>
+
       </el-form>
     </div>
+    <!-- <el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button> -->
+    <el-dialog
+      title="提交后-信息展示"
+      :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      :show-close="false"
+      @close="close"
+      width="40%"
+      >
+      <span>版本名称： {{fileForm.versionName}}</span><br>
+      <span>版本号：   {{fileForm.versionNumber}}</span><br>
+      <span v-if="!!fileForm.desc.trim()">版本描述： {{fileForm.desc}}</span><br>
+      <span>文件路径： {{fileForm.url}}</span><br>
+      <span>文件包名称: {{fileForm.packageName}}</span><br>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import { uploadFileInfo } from '@/config/api'
 export default {
   components: {
     uploadFile: resolve => {
@@ -57,18 +80,33 @@ export default {
     }
   },
   data() {
-    var regPhone = /^[1][3,4,5,7,8][0-9]{9}$/;
-    var validatePhone = (rule, value, callback) => {
+    var regInterg = /^[0-9]*[1-9][0-9]*$/;
+    var validateVersionNumber = (rule, value, callback) => {
       console.log(rule, value, callback);
       if (!value || !value.trim()) {
-        callback(new Error("代理名称不能为空"));
-      } else if (!regPhone.test(value)) {
-        callback(new Error("暂时只支持手机号格式,请输入正确的手机号格式"));
-      } else {
+        callback(new Error("版本号不能为空"));
+      }
+      else if (!regInterg.test(value)) {
+        callback(new Error("版本号必须是正整数,请输入正确的版本号格式"));
+      }else if(value.indexOf('.')>-1){
+        callback(new Error("版本号必须是正整数,不能有小数点"));
+      }  
+      else {
+        callback();
+      }
+    };
+    var validateUrl = (rule, value, callback) => {
+      console.log(rule, value, callback);
+      if (!value || !value.trim()) {
+        callback(new Error("上传的文件不能为空"));
+      }
+      else {
         callback();
       }
     };
     return {
+        dialogVisible:false,
+        fileList:[],
         levelList:[
             {
                 label:'普通级别',
@@ -91,38 +129,64 @@ export default {
         ],
       //   "{\n\"pkg\":\"PACKAGE1\",\n\"version\":\"1\",\n\"model\":\"18927434956\",\n\"imei\":\"123456\"\n}"
       fileForm: {
-        name: "",
-        version: "",
-        model: "",
-        imei: "",
-        pageDesp: "",
-        url: ""
+        versionName: "",
+        versionNumber: "",
+        // model: "",
+        // imei: "",
+        desc: "",
+        url: "",
+        packageName:''
       },
       rules: {
-        // phone: [
-        //   { required: true, validator: validatePhone, trigger: "change" }
+        versionName: [{ required: true, message: "请输入版本名称", trigger: "blur" }],
+        versionNumber: [
+          { required: true, validator:validateVersionNumber, trigger: "blur" }
+        ],
+        // model: [
+        //   { required: true, message: "请输入代理model", trigger: "change" }
         // ],
-        name: [{ required: true, message: "请输入代理name", trigger: "blur" }],
-        version: [
-          { required: true, message: "请输入代理version", trigger: "blur" }
-        ],
-        model: [
-          { required: true, message: "请输入代理model", trigger: "change" }
-        ],
-        url: [{ required: true, message: "请输入代理url", trigger: "blur" }],
-        imei: [{ required: true, message: "请输入代理imei", trigger: "blur" }],
-        pageDesp: [
-          { required: true, message: "请输入代理pageDesp", trigger: "blur" }
+        url: [{ required: true, validator:validateUrl, trigger: "blur" }],
+        // imei: [{ required: true, message: "请输入代理imei", trigger: "blur" }],
+        // desc: [
+        //   { required: true, message: "请先填写版本描述", trigger: "blur" }
+        // ],
+        packageName: [
+          { required: true, message: "请先填写文件包名称", trigger: "blur" }
         ]
       }
     };
   },
   created() {},
   methods: {
+    close(){
+      this.$router.push('/')
+    },
+    handleUploadSuccess(res){
+      console.log('onSueess:',res);
+      this.fileForm.url = res.data.url;
+      this.fileList[0] = {name:res.data.name,url:res.data.url}
+    },
+    handleUploadRemove(res){
+      console.log('onRemove:',res);
+      this.fileForm.url = '';
+      this.fileList = [];
+    },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log('yes')
+          console.log('yes',this.fileForm);
+          uploadFileInfo(this.fileForm)
+          .then(res=>{
+            if(res.code==1){
+              this.$message.success('数据提交成功~~');
+              this.dialogVisible = true;
+            }else {
+              this.$message.warning('数据提交异常，请稍后再试~~')
+            }
+          })
+          .catch(err=>{
+            this.$message.warning('数据提交异常，请稍后再试~~')
+          })
         } else {
           console.log("error submit!!");
           this.$message.warning('请先填写完参数~')

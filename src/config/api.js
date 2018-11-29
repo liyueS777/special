@@ -57,3 +57,4 @@ export const getTrialAccounts = (params) => fetch('POST', '/v1/getTrialAccounts'
 export const getEquipmentByPhone = (params) => fetch('POST', '/v1/getEquipmentByPhone', params)
 
 //版本信息上传 uploadFileInfo
+export const uploadFileInfo = (params) => fetch('POST', '/v1/uploadFileInfo', params)
