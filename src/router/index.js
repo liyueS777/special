@@ -40,6 +40,11 @@ export default new Router({
           path:"/list/fileList",
           name:"fileList",
           component: resolve => require(['@/pages/list/fileList'],resolve)
+        },
+        {
+          path:"/list/addDevice",
+          name:"addDevice",
+          component: resolve => require(['@/pages/list/addDevice'],resolve)
         }
       ]
     },

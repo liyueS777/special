@@ -58,3 +58,8 @@ export const getEquipmentByPhone = (params) => fetch('POST', '/v1/getEquipmentBy
 
 //版本信息上传 uploadFileInfo
 export const uploadFileInfo = (params) => fetch('POST', '/v1/uploadFileInfo', params)
+
+
+//设备 提交 
+
+export const commitEquipment = (params) => fetch('POST', '/v1/commitEquipment', params)

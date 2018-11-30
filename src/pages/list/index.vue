@@ -5,6 +5,8 @@
             <el-col :span="3"><router-link class="link-a" :to="{name:'IDused'}">试用ID使用记录</router-link></el-col>
             <el-col :span="3"><router-link class="link-a" :to="{name:'authManage'}">授权码管理</router-link></el-col>
             <el-col :span="3"><router-link class="link-a" :to="{name:'fileList'}">文件上传</router-link></el-col>
+            <el-col :span="3"><router-link class="link-a" :to="{name:'addDevice'}">添加设备</router-link></el-col>
+            
         </el-row>
         <el-dropdown size="small" split-button type="primary" plain trigger="hover">
             管理员

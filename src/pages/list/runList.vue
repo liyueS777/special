@@ -52,6 +52,28 @@
                           align="center"
                           header-align="center"
                           prop="deadline"
+                          label="激活时间"
+                          >
+                          <template slot-scope="scope">
+                            {{ scope.row.activateTime | translateToDate }}
+                          </template>
+                      </el-table-column>
+                      
+                      <el-table-column
+                          align="center"
+                          header-align="center"
+                          prop="deadline"
+                          width="120"
+                          label="续费次数"
+                          >
+                          <template slot-scope="scope">
+                            {{ scope.row.renewCount }}
+                          </template>
+                      </el-table-column>
+                      <el-table-column
+                          align="center"
+                          header-align="center"
+                          prop="deadline"
                           label="有效截止时间"
                           >
                           <template slot-scope="scope">
