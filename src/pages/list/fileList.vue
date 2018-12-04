@@ -138,7 +138,7 @@ export default {
         packageName:''
       },
       rules: {
-        versionName: [{ required: true, message: "请输入版本名称", trigger: "blur" }],
+        // versionName: [{ required: true, message: "请输入版本名称", trigger: "blur" }],
         versionNumber: [
           { required: true, validator:validateVersionNumber, trigger: "blur" }
         ],
