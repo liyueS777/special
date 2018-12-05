@@ -9,10 +9,10 @@
         class="file-ruleForm"
       >
         <el-form-item label="版本名称" prop="versionName">
-          <el-input v-model="fileForm.versionName" placeholder="请填写版本名称"></el-input>
+          <el-input v-model.trim="fileForm.versionName" placeholder="请填写版本名称"></el-input>
         </el-form-item>
         <el-form-item label="版本号" prop="versionNumber">
-          <el-input v-model="fileForm.versionNumber" placeholder="请填写版本号"></el-input>
+          <el-input v-model.trim="fileForm.versionNumber" placeholder="请填写版本号"></el-input>
         </el-form-item>
         <!-- <el-form-item label="级别" prop="model">
             <el-select v-model="fileForm.model" placeholder="请选择级别">
@@ -35,13 +35,13 @@
             </el-select>
         </el-form-item> -->
         <el-form-item label="版本描述" prop="desc">
-          <el-input v-model="fileForm.desc" placeholder="请填写版本描述"></el-input>
+          <el-input v-model.trim="fileForm.desc" placeholder="请填写版本描述"></el-input>
         </el-form-item>
         <el-form-item label="文件" prop="url">
           <upload-file :fileList="fileList" @uploadSuccess="handleUploadSuccess" @uploadRemove="handleUploadRemove"></upload-file>
         </el-form-item>
         <el-form-item label="文件包名称" prop="packageName">
-          <el-input v-model="fileForm.packageName" placeholder="请填写文件包名称"></el-input>
+          <el-input v-model.trim="fileForm.packageName" placeholder="请填写文件包名称"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" size="small" @click.native="submitForm('fileForm')">立即提交</el-button>

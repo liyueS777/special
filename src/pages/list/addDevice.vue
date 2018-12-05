@@ -9,10 +9,10 @@
         class="file-ruleForm"
       >
         <el-form-item label="设备号" prop="equipment">
-          <el-input v-model="fileForm.equipment" placeholder="请填写设备号"></el-input>
+          <el-input v-model.trim="fileForm.equipment" placeholder="请填写设备号"></el-input>
         </el-form-item>
         <el-form-item label="imei" prop="imei">
-          <el-input v-model="fileForm.imei" placeholder="请填写imei"></el-input>
+          <el-input v-model.trim="fileForm.imei" placeholder="请填写imei"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" size="small" @click.native="submitForm('fileForm')">立即提交</el-button>
@@ -43,7 +43,7 @@ export default {
   data() {
 
     return {
-        dialogVisible:false,
+      dialogVisible:false,
       fileForm: {
         equipment: "",
         imei: "",

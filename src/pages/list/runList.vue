@@ -12,7 +12,7 @@
             <!-- <el-col :span="3"><div class="num">本月续费：5689</div></el-col> -->
         </el-row>
         <div class="line-l bg-shadow">
-            <el-input style="width:300px;margin-right:10px;;" placeholder="请输入用户手机号查询" v-model="phone" @input="whenNull" @keyup.native.enter="searchByPhone" class="input-with-select">
+            <el-input style="width:300px;margin-right:10px;;" placeholder="请输入用户手机号查询" v-model.trim="phone" @input="whenNull" @keyup.native.enter="searchByPhone" class="input-with-select">
                 <el-button slot="append" icon="el-icon-search" size="mini" @click.native="searchByPhone"></el-button>
             </el-input>
             <!-- <el-button size="medium" plain type="primary">导出数据</el-button> -->

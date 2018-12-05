@@ -102,7 +102,7 @@
                   <el-input v-model="createIDusedForm.trialAccount" placeHoleder="请输入ID" disabled></el-input>
               </el-form-item>
               <el-form-item label="代理名称" prop="phone">
-                  <el-input v-model="createIDusedForm.phone" placeHoleder="请输入代理名称"></el-input>
+                  <el-input v-model.trim="createIDusedForm.phone" placeHoleder="请输入代理名称"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
