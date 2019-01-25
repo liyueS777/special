@@ -187,6 +187,7 @@ export default {
           }
         })
         .catch(e => {
+          console.log(e)
           this.$message.warning("查询试用ID数据统计异常~");
         });
     },

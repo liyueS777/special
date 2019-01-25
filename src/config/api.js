@@ -63,3 +63,8 @@ export const uploadFileInfo = (params) => fetch('POST', '/v1/uploadFileInfo', pa
 //设备 提交 
 
 export const commitEquipment = (params) => fetch('POST', '/v1/commitEquipment', params)
+
+
+
+
+export const getHeaD = (params) => fetch('GET', '/lottery/api/v1/getLogoHot', params)
